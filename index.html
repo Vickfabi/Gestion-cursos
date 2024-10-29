@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Cursos</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <script src="https://kit.fontawesome.com/f0e78da616.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <main>
+    <!-- Banner con imagen -->
+    <div class="banner-container">
+      <img src="Banner.png" alt="Sistema de Gestión de Cursos" class="banner-image" />
+    </div>
+    <div class="container-fluid">
+      <!-- Sección Agregar Curso -->
+      <div class="seccion-agregar-curso mb-4">
+        <h2 class="texto-h2">
+          <i class="fa-solid fa-book-medical"></i> Agregar Curso
+        </h2>
+        <form id="form-curso">
+          <label for="nombre-curso">Nombre:</label>
+          <input class="form-control" type="text" id="nombre-curso" required />
+          <label for="profesor-curso">Profesor:</label>
+          <input class="form-control" type="text" id="profesor-curso" required />
+          <button id="boton-agregar-curso" type="submit" class="btn btn-success">
+            <i class="fa-solid fa-plus"></i> Agregar Curso
+          </button>
+        </form>
+      </div>
+
+      <!-- Sección Agregar Estudiante -->
+      <div class="seccion-agregar-estudiante mb-4">
+        <h2 class="texto-h2">
+          <i class="fa-solid fa-user-plus"></i> Agregar Estudiante
+        </h2>
+        <form id="form-estudiante">
+          <label for="nombre-estudiante">Nombre:</label>
+          <input class="form-control" type="text" id="nombre-estudiante" required />
+          <label for="edad-estudiante">Edad:</label>
+          <input class="form-control" type="number" id="edad-estudiante" required />
+          <label for="nota-estudiante">Nota:</label>
+          <input class="form-control" type="number" id="nota-estudiante" required />
+          <label for="curso-estudiante">Curso:</label>
+          <select class="form-control" id="curso-estudiante">
+            <!-- Opciones de curso dinámicamente -->
+          </select>
+          <button id="boton-agregar-estudiante" type="submit" class="btn btn-success">
+            <i class="fa-solid fa-plus"></i> Agregar Estudiante
+          </button>
+        </form>
+      </div>
+
+      <!-- Sección Listado de Cursos y Estudiantes -->
+      <div class="seccion-listado">
+        <h2 class="texto-h2">
+          <i class="fa-solid fa-list"></i> Listado de Cursos y Estudiantes
+        </h2>
+        <div class="input-container mb-3 container">
+          <input type="text" id="busqueda-ingresada" class="form-control" placeholder="Buscar curso o estudiante..." />
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <select id="filtro-estudiantes" class="form-select">
+            <option value="">Ordenar por</option>
+            <option value="edad">Ordenar por Edad</option>
+            <option value="nota">Ordenar por Nota</option>
+          </select>
+        </div>
+        <div id="lista-cursos">
+          <!-- Cursos y estudiantes se mostrarán aquí -->
+        </div>
+      </div>
+    </div>
+    <div id="formulario-edicion" style="display: none;">
+      <h2 class="texto-h2">Edición</h2>
+
+      <div id="form-edicion" class="row mb-4">
+        <h4 class="texto-h4-curso">
+          <i class="fa-solid fa-graduation-cap"></i> Curso
+        </h4>
+
+        <div class="col-md-6 mb-3">
+          <label for="nuevo-nombre-curso">Nuevo Curso:</label>
+          <input type="text" id="nuevo-nombre-curso" class="form-control" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="nuevo-nombre-profesor">Nuevo Profesor:</label>
+          <input type="text" id="nuevo-nombre-profesor" class="form-control" />
+        </div>
+
+        <div class="col-12 mb-4">
+          <h4 class="texto-h4-estudiante">
+            <i class="fa-solid fa-users"></i> Estudiantes
+          </h4>
+
+          <!-- Formulario de edición de estudiante -->
+          <div class="row" id="formulario-edicion-estudiante" style="display: none;">
+            <div class="col mb-3">
+              <label for="nombre-estudiante-editar">Nombre:</label>
+              <input class="form-control" type="text" id="nombre-estudiante-editar" placeholder="Nombre" />
+            </div>
+            <div class="col mb-3">
+              <label for="edad-estudiante-editar">Edad:</label>
+              <input class="form-control" type="number" id="edad-estudiante-editar" placeholder="Edad" />
+            </div>
+            <div class="col mb-3">
+              <label for="nota-estudiante-editar">Nota:</label>
+              <input class="form-control" type="number" id="nota-estudiante-editar" placeholder="Nota" step="0.1"
+                min="0" max="10" />
+            </div>
+
+            <div class="col-12">
+              <button id="guardar-edicion-estudiante" class="btn btn-info">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar
+              </button>
+              <button id="cancelar-edicion-estudiante" class="btn btn-secondary">
+                <i class="fa-solid fa-x"></i> Cancelar
+              </button>
+            </div>
+          </div>
+
+          <div id="lista-estudiantes-edicion" class="mt-3"></div>
+          <!-- Aquí se mostrará la tabla -->
+        </div>
+        <div class="col-12">
+          <button id="guardar-edicion" class="btn btn-info">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar
+          </button>
+          <button id="cancelar-edicion" class="btn btn-secondary">
+            <i class="fa-solid fa-x"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="modal-confirmacion" class="modal">
+      <div class="modal-content" id="contenedor-modal">
+        <p id="mensaje-confirmacion"></p>
+        <button id="btn-confirmar" class="btn btn-danger">Sí</button>
+        <button id="btn-cancelar" class="btn btn-secondary">No</button>
+      </div>
+    </div>
+
+    <div id="lista-cursos" class="mt-4">
+      <!-- Cursos y estudiantes se mostrarán aquí -->
+    </div>
+    <!-- Estadísticas Generales -->
+  
+    <div id="contenedor-estadisticas" class="row mb-4">
+      <h2 class="texto-h2">
+        <i class="fa-solid fa-chart-simple"></i> Estadísticas Generales del Curso
+      </h2>
+      <div class="col">
+        <table id="tabla-estadisticas" class="table">
+          <thead>
+            <tr>
+              <th>Estudiantes</th>
+              <th>Promedio</th>
+              <th>Cursos</th>
+              <th>Mejor Curso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="total-estudiantes"></td>
+              <td id="promedio-general"></td>
+              <td id="total-cursos"></td>
+              <td id="mejor-curso"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-----------------------json-------------------->
+    <div class="json text-center mt-4">
+      <h2 class="texto-h2">
+        <i class="fa-solid fa-download"></i> Selecciona para descargar los datos
+      </h2>
+      <button id="exportar-json" class="btn btn-success">Exportar Datos a JSON</button>
+    </div>
+    <footer class="footer">
+      <div class="footer-redes">
+        <h3>¡Seguinos en nuestras redes!</h3>
+        <a href="https://www.facebook.com" target="_blank">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+      </div>
+      <div class="container">
+        <p class="politica_privacidad">
+          <i class="fa-solid fa-envelope"></i>
+          E-mail: <a href="mailto:info@utncursos.com">info@utncursos.com</a> |
+          <i class="fa-solid fa-phone"></i>
+          Tel: <a href="tel:+1234567890">(123) 456-7890</a>
+        </p>
+        <p class="politica_privacidad">© 2024 Sistema de Gestión de Cursos</p>
+      </div>
+    </footer>
+  </main>
+  <script type="module" src="etapa3.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
